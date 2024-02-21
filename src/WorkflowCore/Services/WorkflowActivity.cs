@@ -41,10 +41,10 @@ namespace WorkflowCore.Services
             var activity = Activity.Current;
             if (activity != null)
             {
-                activity.DisplayName = $"workflow {action} {workflow.WorkflowDefinitionId}";
-                activity.SetTag("workflow.id", workflow.Id);
-                activity.SetTag("workflow.definition", workflow.WorkflowDefinitionId);
-                activity.SetTag("workflow.status", workflow.Status);
+                activity.DisplayName = $"workflow {action} {workflow?.WorkflowDefinitionId}";
+                activity.SetTag("workflow.id", workflow?.Id);
+                activity.SetTag("workflow.definition", workflow?.WorkflowDefinitionId);
+                activity.SetTag("workflow.status", workflow?.Status);
             }
         }
 
@@ -57,10 +57,18 @@ namespace WorkflowCore.Services
                     ? "inline"
                     : workflowStep.Name;
 
-                activity.DisplayName += $" step {stepName}";
+                if (string.IsNullOrEmpty(activity.DisplayName))
+                {
+                    activity.DisplayName = $"step {stepName}";
+                }
+                else
+                {
+                    activity.DisplayName += $" step {stepName}";    
+                }
+                
                 activity.SetTag("workflow.step.id", workflowStep.Id);
                 activity.SetTag("workflow.step.name", stepName);
-                activity.SetTag("workflow.step.type", workflowStep.BodyType.Name);
+                activity.SetTag("workflow.step.type", workflowStep.BodyType?.Name);
             }
         }
 
@@ -69,10 +77,10 @@ namespace WorkflowCore.Services
             var activity = Activity.Current;
             if (activity != null)
             {
-                activity.SetTag("workflow.subscriptions.count", result.Subscriptions.Count);
-                activity.SetTag("workflow.errors.count", result.Errors.Count);
+                activity.SetTag("workflow.subscriptions.count", result?.Subscriptions?.Count);
+                activity.SetTag("workflow.errors.count", result?.Errors?.Count);
 
-                if (result.Errors.Count > 0)
+                if (result?.Errors?.Count > 0)
                 {
                     activity.SetStatus(Status.Error);
                     activity.SetStatus(ActivityStatusCode.Error);
@@ -85,10 +93,10 @@ namespace WorkflowCore.Services
             var activity = Activity.Current;
             if (activity != null)
             {
-                activity.DisplayName = $"workflow process {evt.EventName}";
-                activity.SetTag("workflow.event.id", evt.Id);
-                activity.SetTag("workflow.event.name", evt.EventName);
-                activity.SetTag("workflow.event.processed", evt.IsProcessed);
+                activity.DisplayName = $"workflow process {evt?.EventName}";
+                activity.SetTag("workflow.event.id", evt?.Id);
+                activity.SetTag("workflow.event.name", evt?.EventName);
+                activity.SetTag("workflow.event.processed", evt?.IsProcessed);
             }
         }
 
