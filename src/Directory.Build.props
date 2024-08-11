@@ -4,10 +4,10 @@
     <PackageLicenseUrl>https://github.com/jakenuts/workflow-core/blob/master/LICENSE.md</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/jakenuts/workflow-core.git</RepositoryUrl>
-    <Version>3.9.3</Version>
-    <AssemblyVersion>3.9.3</AssemblyVersion>
-    <FileVersion>3.9.3</FileVersion>
-    <PackageIconUrl>https://github.com/danielgerlag/workflow-core/raw/master/src/logo.png</PackageIconUrl>
-    <PackageVersion>3.9.3</PackageVersion>
+    <Version>5.0.2</Version>
+    <AssemblyVersion>5.0.2</AssemblyVersion>
+    <FileVersion>5.0.2</FileVersion>
+    <PackageIconUrl>https://github.com/jakenuts/workflow-core/raw/master/src/logo.png</PackageIconUrl>
+    <PackageVersion>5.0.2</PackageVersion>
   </PropertyGroup>
 </Project>

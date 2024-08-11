@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using OpenTelemetry.Trace;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
@@ -50,9 +51,15 @@ namespace WorkflowCore.Services
 
         internal static void Enrich(WorkflowStep workflowStep)
         {
-            var activity = Activity.Current;
-            if (activity != null)
+            try
             {
+                var activity = Activity.Current;
+
+                if (activity == null)
+                {
+                    return;
+                }
+
                 var stepName = string.IsNullOrEmpty(workflowStep.Name)
                     ? "inline"
                     : workflowStep.Name;
@@ -63,12 +70,16 @@ namespace WorkflowCore.Services
                 }
                 else
                 {
-                    activity.DisplayName += $" step {stepName}";    
+                    activity.DisplayName += $" step {stepName}";
                 }
-                
+
                 activity.SetTag("workflow.step.id", workflowStep.Id);
                 activity.SetTag("workflow.step.name", stepName);
-                activity.SetTag("workflow.step.type", workflowStep.BodyType?.Name);
+                activity.SetTag("workflow.step.type", workflowStep?.BodyType?.Name);
+            }
+            catch (Exception ex)
+            {
+                // Swallow
             }
         }
 
@@ -102,10 +113,7 @@ namespace WorkflowCore.Services
 
         internal static void EnrichWithDequeuedItem(this Activity activity, string item)
         {
-            if (activity != null)
-            {
-                activity.SetTag("workflow.queue.item", item);
-            }
+            activity?.SetTag("workflow.queue.item", item);
         }
 
         private static Activity StartRootActivity(
